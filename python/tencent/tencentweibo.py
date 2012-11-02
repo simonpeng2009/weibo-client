@@ -162,7 +162,6 @@ class T_QQ(object):
             self.curl.setopt(pycurl.PROXY,proxy)
 
     def login(self):
-        if 
         self.__initVerifyCode()
         self.__encodePwd()
         self.__postLogin()
@@ -183,7 +182,7 @@ class T_QQ(object):
         self.curl.perform()
 #        print retrieved_headers
         print retrieved_body
-        result = json.loads(retrieved_body.contents)
+        result = json.loads(retrieved_body.contents.decode("GBK").encode("UTF-8").strip())
         if(result["result"]==0):
             print '%s send status successed. [%s]' % (self.uin,result)
         else:
@@ -214,7 +213,7 @@ class T_QQ(object):
         self.curl.setopt(pycurl.HTTPPOST,data)
         self.curl.perform()
 
-        print retrieved_body
+        print retrieved_body.contents.decode("GBK").encode("UTF-8").strip()
         result = json.loads(retrieved_body.contents)
         if(result["result"]==0):
             return result["info"]["url"]
@@ -229,6 +228,7 @@ class T_QQ(object):
         self.curl.setopt(pycurl.WRITEFUNCTION, retrieved_body.store)
         self.curl.setopt(pycurl.POSTFIELDS,body)
         self.curl.perform()
+        print retrieved_body.contents.decode("GBK").encode("UTF-8").strip()
 #        result = json.loads(retrieved_body.contents,encoding='utf-8')
 #        if(result["result"]==0):
         m=re.search(r"result:(.+),msg",retrieved_body.contents)
@@ -247,7 +247,7 @@ if __name__ == "__main__":
     tApp = T_QQ("$username","$password")
     #tApp.setProxy("http://localhost:8080")
     tApp.login()
-    tApp.sendPic('http://ecx.images-amazon.com/images/I/41m7YwHS18L._SL160_.jpg')
-    tApp.sendStatus("我ri大爷，一晚没睡呀！",'http://img.ffffound.com/static-data/assets/6/b531b5dacbd6cd101e1cd1c39f28b1c57df7c913_m.jpg')
+#    tApp.sendPic('http://ecx.images-amazon.com/images/I/41m7YwHS18L._SL160_.jpg')
+#    tApp.sendStatus("烦死个人呀！",'http://img.ffffound.com/static-data/assets/6/b531b5dacbd6cd101e1cd1c39f28b1c57df7c913_m.jpg')
 #    tApp.follow('aiqingriji9193')
     print tApp.loginMsg
